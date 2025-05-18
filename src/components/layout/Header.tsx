@@ -1,8 +1,12 @@
-
 import React, { useState, useEffect } from "react";
 import { Menu, Search, Bell, Heart, ShoppingCart, User, X, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import AnnouncementBar from "./AnnouncementBar";
+import { useAuth } from "@/contexts/AuthProvider";
+import useAuthModal from "@/hooks/useAuthModal";
+import AuthModal from "@/components/shared/AuthModal";
+import useAuthNavigation from "@/hooks/useAuthNavigation";
+import MenuNavigation from "./MenuNavigation";
 
 const categories = [
   { emoji: "🔑", name: "Llaves", subcategories: ["Llaves con chip", "Duplicados", "Carcasas"] },
@@ -15,10 +19,16 @@ const categories = [
 ];
 
 const Header: React.FC = () => {
+  // Existing state
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
   const [isSticky, setIsSticky] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Auth related hooks
+  const { isAuthenticated, user } = useAuth();
+  const { isModalOpen, pendingRedirectUrl, closeModal } = useAuthModal();
+  const { navigateToProtected } = useAuthNavigation();
 
   // Handle scroll for sticky header
   useEffect(() => {
@@ -58,9 +68,39 @@ const Header: React.FC = () => {
     setActiveSubMenu(null);
   };
 
+  const handleProfileClick = () => {
+    if (isAuthenticated) {
+      navigateToProtected("/perfil");
+    } else {
+      navigateToProtected("/auth");
+    }
+  };
+
+  const handleCatalogClick = () => {
+    navigateToProtected("/catalogo");
+  };
+
+  const handleNotificationsClick = () => {
+    navigateToProtected("/notificaciones");
+  };
+
+  const handleFavoritesClick = () => {
+    navigateToProtected("/favoritos");
+  };
+
+  const handleCartClick = () => {
+    navigateToProtected("/carrito");
+  };
+
   return (
     <>
       <AnnouncementBar />
+      <AuthModal 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
+        redirectUrl={pendingRedirectUrl} 
+      />
+
       <header className={`header w-full z-50 ${isSticky ? "header-sticky" : ""}`}>
         {/* First row - Desktop */}
         <div className="container-wide py-3">
@@ -103,24 +143,42 @@ const Header: React.FC = () => {
 
             {/* Right side - Action icons */}
             <div className="flex items-center space-x-6">
-              <button aria-label="Ver notificaciones" className="text-gray-600 hover:text-vicar-blue">
+              <button 
+                aria-label="Ver notificaciones" 
+                className="text-gray-600 hover:text-vicar-blue"
+                onClick={handleNotificationsClick}
+              >
                 <Bell size={22} />
               </button>
-              <Link to="/favoritos" aria-label="Ver favoritos" className="text-gray-600 hover:text-vicar-blue">
+              <button 
+                aria-label="Ver favoritos" 
+                className="text-gray-600 hover:text-vicar-blue"
+                onClick={handleFavoritesClick}
+              >
                 <Heart size={22} />
-              </Link>
-              <Link to="/carrito" className="text-gray-600 hover:text-vicar-blue relative">
+              </button>
+              <button 
+                aria-label="Ver carrito"
+                className="text-gray-600 hover:text-vicar-blue relative"
+                onClick={handleCartClick}
+              >
                 <ShoppingCart size={22} />
                 <span className="absolute -top-2 -right-2 bg-vicar-blue text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
                   0
                 </span>
-              </Link>
-              <Link to="/acceder" className="hidden md:flex btn-primary">
-                ACCEDER
-              </Link>
-              <Link to="/acceder" className="md:hidden text-gray-600 hover:text-vicar-blue">
+              </button>
+              <button 
+                onClick={handleProfileClick}
+                className="hidden md:flex btn-primary"
+              >
+                {isAuthenticated ? 'MI PERFIL' : 'ACCEDER'}
+              </button>
+              <button 
+                onClick={handleProfileClick}
+                className="md:hidden text-gray-600 hover:text-vicar-blue"
+              >
                 <User size={22} />
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -170,28 +228,34 @@ const Header: React.FC = () => {
                 <ul className="flex items-center space-x-6">
                   {categories.map((category) => (
                     <li key={category.name} className="dropdown py-3 relative">
-                      <a
-                        href={`/categorias/${category.name.toLowerCase()}`}
+                      <button
+                        onClick={() => navigateToProtected(`/categorias/${category.name.toLowerCase()}`)}
                         className="flex items-center space-x-1 hover:text-vicar-blue transition-colors"
                       >
                         <span>{category.emoji}</span>
                         <span>{category.name}</span>
-                      </a>
+                      </button>
                       <div className="dropdown-content mt-3">
                         {category.subcategories.map((subcategory) => (
-                          <a
+                          <button
                             key={subcategory}
-                            href={`/categorias/${category.name.toLowerCase()}/${subcategory.toLowerCase()}`}
-                            className="block px-4 py-2 hover:bg-gray-100 transition-colors"
+                            onClick={() => navigateToProtected(`/categorias/${category.name.toLowerCase()}/${subcategory.toLowerCase()}`)}
+                            className="block px-4 py-2 w-full text-left hover:bg-gray-100 transition-colors"
                           >
                             {subcategory}
-                          </a>
+                          </button>
                         ))}
                       </div>
                     </li>
                   ))}
                 </ul>
               </nav>
+              <button 
+                onClick={handleCatalogClick}
+                className="text-gray-600 hover:text-vicar-blue mr-4"
+              >
+                Ver Catálogo Completo
+              </button>
               <a
                 href="https://wa.me/51123456789?text=Hola%20VICAR-PERU,%20necesito%20ayuda"
                 className="hidden lg:flex items-center text-vicar-dark-gray bg-vicar-green px-4 py-2 rounded-md"
@@ -227,37 +291,25 @@ const Header: React.FC = () => {
 
           <div className="mb-6">
             <div className="mb-2 font-semibold">Categorías</div>
-            <ul className="space-y-4">
-              {categories.map((category) => (
-                <li key={category.name}>
-                  <button
-                    onClick={() => handleCategoryClick(category.name)}
-                    className="flex justify-between items-center w-full py-2 hover:text-vicar-blue transition-colors"
-                  >
-                    <div className="flex items-center">
-                      <span className="mr-2">{category.emoji}</span>
-                      <span>{category.name}</span>
-                    </div>
-                    <ChevronRight size={20} />
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <MenuNavigation 
+              categories={categories} 
+              onClose={() => setMobileMenuOpen(false)} 
+            />
           </div>
 
           <div className="space-y-4 border-t border-gray-200 pt-6">
-            <a href="/favoritos" className="block py-2 hover:text-vicar-blue transition-colors">
+            <button onClick={handleFavoritesClick} className="block py-2 hover:text-vicar-blue transition-colors w-full text-left">
               Favoritos
-            </a>
-            <a href="/carrito" className="block py-2 hover:text-vicar-blue transition-colors">
+            </button>
+            <button onClick={handleCartClick} className="block py-2 hover:text-vicar-blue transition-colors w-full text-left">
               Carrito
-            </a>
-            <a href="/productos" className="block py-2 hover:text-vicar-blue transition-colors">
+            </button>
+            <button onClick={handleCatalogClick} className="block py-2 hover:text-vicar-blue transition-colors w-full text-left">
               Catálogo Completo
-            </a>
-            <a href="/acceder" className="block py-2 hover:text-vicar-blue transition-colors">
-              Acceder / Login
-            </a>
+            </button>
+            <button onClick={handleProfileClick} className="block py-2 hover:text-vicar-blue transition-colors w-full text-left">
+              {isAuthenticated ? 'Mi Perfil' : 'Acceder / Login'}
+            </button>
             <a
               href="https://wa.me/51123456789?text=Hola%20VICAR-PERU,%20necesito%20ayuda"
               className="btn-whatsapp mt-4"
@@ -305,13 +357,15 @@ const Header: React.FC = () => {
             <ul className="space-y-3">
               {category.subcategories.map((subcategory) => (
                 <li key={subcategory}>
-                  <a
-                    href={`/categorias/${category.name.toLowerCase()}/${subcategory.toLowerCase()}`}
-                    className="block py-2 px-3 hover:bg-gray-100 rounded transition-colors"
-                    onClick={() => setMobileMenuOpen(false)}
+                  <button
+                    className="block py-2 px-3 w-full text-left hover:bg-gray-100 rounded transition-colors"
+                    onClick={() => {
+                      navigateToProtected(`/categorias/${category.name.toLowerCase()}/${subcategory.toLowerCase()}`);
+                      setMobileMenuOpen(false);
+                    }}
                   >
                     {subcategory}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>

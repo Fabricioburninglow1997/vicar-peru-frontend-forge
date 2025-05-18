@@ -16,9 +16,17 @@ interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   redirectUrl?: string;
+  modalTitle?: string;
+  modalDescription?: string;
 }
 
-const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, redirectUrl = '' }) => {
+const AuthModal: React.FC<AuthModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  redirectUrl = '', 
+  modalTitle = "Acceso Requerido",
+  modalDescription = "Para continuar con esta acción, necesitas acceder a tu cuenta."
+}) => {
   const navigate = useNavigate();
   
   const handleLogin = () => {
@@ -35,9 +43,9 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, redirectUrl = ''
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-center">Acceso Requerido</DialogTitle>
+          <DialogTitle className="text-center">{modalTitle}</DialogTitle>
           <DialogDescription className="text-center">
-            Para continuar con esta acción, necesitas acceder a tu cuenta.
+            {modalDescription}
           </DialogDescription>
         </DialogHeader>
         

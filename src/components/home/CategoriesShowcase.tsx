@@ -1,6 +1,7 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import useAuthNavigation from '@/hooks/useAuthNavigation';
 
 const showcaseCategories = [
   {
@@ -20,6 +21,13 @@ const showcaseCategories = [
 ];
 
 const CategoriesShowcase: React.FC = () => {
+  const { navigateToProtected } = useAuthNavigation();
+  
+  const handleCategoryClick = (link: string) => {
+    // Use the auth navigation hook instead of direct Link component
+    navigateToProtected(link);
+  };
+
   return (
     <section className="py-16 bg-white">
       <div className="container-wide">
@@ -29,8 +37,9 @@ const CategoriesShowcase: React.FC = () => {
           {showcaseCategories.map((category) => (
             <div 
               key={category.id}
-              className="relative overflow-hidden rounded-xl shadow-lg group"
+              className="relative overflow-hidden rounded-xl shadow-lg group cursor-pointer"
               style={{ height: '400px' }}
+              onClick={() => handleCategoryClick(category.link)}
             >
               <img 
                 src={category.image} 
@@ -39,12 +48,11 @@ const CategoriesShowcase: React.FC = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent flex flex-col justify-end p-8">
                 <h3 className="text-white text-2xl font-bold mb-4">{category.title}</h3>
-                <Link 
-                  to={category.link}
+                <button 
                   className="bg-white text-vicar-blue font-medium px-6 py-3 rounded inline-block hover:bg-vicar-blue hover:text-white transition-colors"
                 >
                   {category.buttonText}
-                </Link>
+                </button>
               </div>
             </div>
           ))}

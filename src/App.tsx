@@ -47,6 +47,7 @@ const App = () => (
               
               {/* Protected routes - require authentication */}
               <Route path="/catalogo" element={<AuthGuard><Catalog /></AuthGuard>} />
+              <Route path="/productos" element={<AuthGuard><Catalog /></AuthGuard>} />
               <Route path="/categorias/:category" element={<AuthGuard><Catalog /></AuthGuard>} />
               <Route path="/categorias/:category/:subcategory" element={<AuthGuard><Catalog /></AuthGuard>} />
               <Route path="/producto/:id" element={<AuthGuard><ProductDetails /></AuthGuard>} />

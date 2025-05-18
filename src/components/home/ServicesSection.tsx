@@ -2,6 +2,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Wrench, Shield, Zap, Clock } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthProvider';
+import useAuthModal from '@/hooks/useAuthModal';
+import AuthModal from '@/components/shared/AuthModal';
 
 const services = [
   {
@@ -31,6 +34,16 @@ const services = [
 ];
 
 const ServicesSection: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+  const { isModalOpen, requireAuth, closeModal } = useAuthModal();
+
+  const handleServiceClick = () => {
+    requireAuth(() => {
+      // This will only execute if the user is authenticated
+      window.location.href = '/servicios';
+    }, '/servicios');
+  };
+
   return (
     <section className="py-16 bg-white">
       <div className="container-wide">
@@ -51,13 +64,29 @@ const ServicesSection: React.FC = () => {
         </div>
         
         <div className="flex justify-center mt-10">
-          <Link 
-            to="/servicios" 
-            className="btn-primary"
-          >
-            Descubrir Todos Nuestros Servicios
-          </Link>
+          {isAuthenticated ? (
+            <Link 
+              to="/servicios" 
+              className="btn-primary"
+            >
+              Descubrir Todos Nuestros Servicios
+            </Link>
+          ) : (
+            <button 
+              onClick={handleServiceClick}
+              className="btn-primary"
+            >
+              Descubrir Todos Nuestros Servicios
+            </button>
+          )}
         </div>
+
+        {/* Auth Modal */}
+        <AuthModal 
+          isOpen={isModalOpen} 
+          onClose={closeModal}
+          redirectUrl="/servicios" 
+        />
       </div>
     </section>
   );

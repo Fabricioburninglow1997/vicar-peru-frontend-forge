@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import Header from '@/components/layout/Header';
@@ -136,7 +137,7 @@ const Catalog: React.FC = () => {
                       <SelectValue placeholder="Todas las categorías" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Todas las categorías</SelectItem>
+                      <SelectItem value="all">Todas las categorías</SelectItem>
                       {categories.map(cat => (
                         <SelectItem key={cat.id} value={cat.name.toLowerCase()}>
                           {cat.emoji} {cat.name}
@@ -207,7 +208,7 @@ const Catalog: React.FC = () => {
                         <SelectValue placeholder="Ordenar por" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">Relevancia</SelectItem>
+                        <SelectItem value="relevance">Relevancia</SelectItem>
                         <SelectItem value="price-asc">Precio: menor a mayor</SelectItem>
                         <SelectItem value="price-desc">Precio: mayor a menor</SelectItem>
                         <SelectItem value="name-asc">Nombre: A-Z</SelectItem>

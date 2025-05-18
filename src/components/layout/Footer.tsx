@@ -1,7 +1,6 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, Map, Clock, Facebook, Instagram, YouTube } from 'lucide-react';
+import { Mail, Phone, Map, Clock, Facebook, Instagram, Youtube } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -95,7 +94,7 @@ const Footer: React.FC = () => {
                   <Instagram size={20} />
                 </a>
                 <a href="https://youtube.com" target="_blank" rel="noreferrer" aria-label="Visita nuestro canal de YouTube" className="bg-white text-vicar-blue p-2 rounded-full hover:bg-vicar-blue hover:text-white transition-colors">
-                  <YouTube size={20} />
+                  <Youtube size={20} />
                 </a>
               </div>
             </div>

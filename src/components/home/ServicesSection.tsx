@@ -1,12 +1,12 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Tool, Shield, Zap, Clock } from 'lucide-react';
+import { Wrench, Shield, Zap, Clock } from 'lucide-react';
 
 const services = [
   {
     id: 1,
-    icon: <Tool size={36} className="text-vicar-blue" />,
+    icon: <Wrench size={36} className="text-vicar-blue" />,
     title: "Instalación Profesional",
     description: "Técnicos certificados con años de experiencia en instalación de alarmas, GPS y autoradios."
   },

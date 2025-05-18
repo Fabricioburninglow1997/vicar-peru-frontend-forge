@@ -1,4 +1,3 @@
-
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -12,7 +11,9 @@ const bestSellerProducts = [
     image: "https://images.unsplash.com/photo-1507136566006-cfc505b114fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     price: 349.90,
     description: "Alarma de seguridad con sensor de impacto y 2 controles remotos.",
-    isBestseller: true
+    isBestseller: true,
+    sku: "ALRM-VIP-3106V",
+    category: "alarmas"
   },
   {
     id: "bs2",
@@ -23,7 +24,9 @@ const bestSellerProducts = [
     isBestseller: true,
     isOnSale: true,
     discount: 15,
-    originalPrice: 699.90
+    originalPrice: 699.90,
+    sku: "ARRD-PIO-10BT",
+    category: "autoradios"
   },
   {
     id: "bs3",
@@ -31,7 +34,9 @@ const bestSellerProducts = [
     image: "https://images.unsplash.com/photo-1554866585-cd94860890b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     price: 159.90,
     description: "Cámara de visión nocturna con líneas guía para estacionamiento.",
-    isBestseller: true
+    isBestseller: true,
+    sku: "CAM-RTR-HD1",
+    category: "accesorios"
   },
   {
     id: "bs4",
@@ -39,7 +44,9 @@ const bestSellerProducts = [
     image: "https://images.unsplash.com/photo-1617197310667-c38da99f0cde?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     price: 219.90,
     description: "Kit de luces LED de alta intensidad con 12000 lúmenes.",
-    isBestseller: true
+    isBestseller: true,
+    sku: "LZ-LED-H4SB",
+    category: "luces"
   },
   {
     id: "bs5",
@@ -47,7 +54,9 @@ const bestSellerProducts = [
     image: "https://images.unsplash.com/photo-1612185079868-61f1db929221?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     price: 289.90,
     description: "Duplicado de llave con chip y programación incluida.",
-    isBestseller: true
+    isBestseller: true,
+    sku: "LLAV-TOY-CRL",
+    category: "llaves"
   },
   {
     id: "bs6",
@@ -58,7 +67,9 @@ const bestSellerProducts = [
     isBestseller: true,
     isOnSale: true,
     discount: 10,
-    originalPrice: 199.90
+    originalPrice: 199.90,
+    sku: "PRLNT-PIO-1670F",
+    category: "parlantes"
   }
 ];
 

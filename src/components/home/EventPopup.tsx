@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface EventPopupProps {
   eventName: string;
@@ -18,15 +19,21 @@ const EventPopup: React.FC<EventPopupProps> = ({
   offerUrl 
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
-    // Check if the popup has been dismissed before
+    // Check if the popup has been dismissed in this session
+    const hasBeenShownThisSession = sessionStorage.getItem(`event-popup-shown-${eventName}`);
+    
+    // Check if the popup has been permanently dismissed
     const hasBeenDismissed = localStorage.getItem(`event-popup-dismissed-${eventName}`);
     
-    if (!hasBeenDismissed) {
+    if (!hasBeenShownThisSession && !hasBeenDismissed) {
       // Show popup after a slight delay for better UX
       const timer = setTimeout(() => {
         setIsOpen(true);
+        // Mark as shown for this session
+        sessionStorage.setItem(`event-popup-shown-${eventName}`, 'true');
       }, 3000);
       
       return () => clearTimeout(timer);
@@ -45,28 +52,26 @@ const EventPopup: React.FC<EventPopupProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 animate-fade-in">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 animate-slide-up">
-        <div className="relative">
-          <button 
-            onClick={handleClose}
-            className="absolute right-3 top-3 bg-white rounded-full p-1 shadow-md hover:bg-gray-100 transition-colors z-10"
-            aria-label="Cerrar"
-          >
-            <X size={20} />
-          </button>
-          
-          <img 
-            src={imageUrl} 
-            alt={eventName} 
-            className="w-full h-48 object-cover rounded-t-lg"
-          />
-          
-          <div className="absolute top-4 left-4">
-            <span className="bg-vicar-blue text-white text-xs font-bold px-2 py-1 rounded">
-              Evento Especial
-            </span>
-          </div>
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 animate-fade-in p-4">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 animate-slide-up relative">
+        <button 
+          onClick={handleClose}
+          className="absolute right-3 top-3 bg-white rounded-full p-1 shadow-md hover:bg-gray-100 transition-colors z-10"
+          aria-label="Cerrar"
+        >
+          <X size={isMobile ? 24 : 20} />
+        </button>
+        
+        <img 
+          src={imageUrl} 
+          alt={eventName} 
+          className="w-full h-48 object-cover rounded-t-lg"
+        />
+        
+        <div className="absolute top-4 left-4">
+          <span className="bg-vicar-blue text-white text-xs font-bold px-2 py-1 rounded">
+            Evento Especial
+          </span>
         </div>
         
         <div className="p-6">

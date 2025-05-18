@@ -2,6 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthNavigation from '@/hooks/useAuthNavigation';
+import { useAuth } from '@/contexts/AuthProvider';
 
 const showcaseCategories = [
   {
@@ -22,11 +23,17 @@ const showcaseCategories = [
 
 const CategoriesShowcase: React.FC = () => {
   const { navigateToProtected } = useAuthNavigation();
+  const { isAuthenticated } = useAuth();
   
   const handleCategoryClick = (link: string) => {
     // Use the auth navigation hook instead of direct Link component
     navigateToProtected(link);
   };
+
+  // Only render for authenticated users
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <section className="py-16 bg-white">

@@ -18,8 +18,15 @@ import EventPopup from '../components/home/EventPopup';
 const Index: React.FC = () => {
   return (
     <>
+      <EventPopup
+        eventName="CYBERDAY"
+        description="¡Aprovecha las mejores ofertas en alarmas, autoradios y accesorios para tu vehículo con descuentos de hasta 40%!"
+        dateRange="15 - 17 de Julio, 2023"
+        imageUrl="https://images.unsplash.com/photo-1493238792000-8113da705763?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+        offerUrl="/ofertas/cyberday"
+      />
       <Header />
-      
+
       <main>
         <HeroSection />
         <BrandsSection />
@@ -30,19 +37,11 @@ const Index: React.FC = () => {
         <ServicesSection />
         <TestimonialsSection />
         <CategoriesShowcase />
-        <WhyChooseUs />
         <WhatsAppSection />
+        <WhyChooseUs />
       </main>
-      
+
       <Footer />
-      
-      <EventPopup 
-        eventName="CYBERDAY"
-        description="¡Aprovecha las mejores ofertas en alarmas, autoradios y accesorios para tu vehículo con descuentos de hasta 40%!"
-        dateRange="15 - 17 de Julio, 2023"
-        imageUrl="https://images.unsplash.com/photo-1493238792000-8113da705763?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-        offerUrl="/ofertas/cyberday"
-      />
     </>
   );
 };

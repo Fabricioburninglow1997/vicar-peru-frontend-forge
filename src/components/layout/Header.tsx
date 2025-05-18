@@ -135,12 +135,7 @@ const Header: React.FC = () => {
           <div className="container-wide">
             <div className="flex justify-between items-center">
               <CategoryNavigation categories={categories} />
-              <button 
-                onClick={handleCatalogClick}
-                className="text-gray-600 hover:text-vicar-blue mr-4"
-              >
-                Ver Catálogo Completo
-              </button>
+              
               <a
                 href="https://wa.me/51123456789?text=Hola%20VICAR-PERU,%20necesito%20ayuda"
                 className="hidden lg:flex items-center text-vicar-dark-gray bg-vicar-green px-4 py-2 rounded-md"

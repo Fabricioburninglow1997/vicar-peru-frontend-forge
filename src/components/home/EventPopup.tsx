@@ -53,7 +53,7 @@ const EventPopup: React.FC<EventPopupProps> = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 animate-fade-in p-4">
-      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 animate-slide-up relative">
+      <div className="bg-white rounded-lg shadow-xl overflow-hidden w-full max-w-md animate-slide-up relative">
         <button 
           onClick={handleClose}
           className="absolute right-3 top-3 bg-white rounded-full p-1 shadow-md hover:bg-gray-100 transition-colors z-10"
